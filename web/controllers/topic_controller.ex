@@ -30,7 +30,7 @@ defmodule Discuss.TopicController do
     
     # Insert the data in the changeset into the database
     case Repo.insert(changeset) do
-      {:ok, post} -> 
+      {:ok, _} -> 
         conn
         |> put_flash(:info, "Topic Created") # Create a message telling the user topic was created
         |> redirect(to: topic_path(conn, :index)) # Redirect to the index route
@@ -39,4 +39,29 @@ defmodule Discuss.TopicController do
     end
   end
 
+  @doc """
+    Edit a topic
+  """
+  def edit(conn, %{"id" => topic_id}) do
+    topic = Repo.get(Topic, topic_id) # Get the topic we want to edit from the database
+    changeset = Topic.changeset(topic) # Create a changeset out of the topic that was gotten from the database
+
+    render conn, "edit.html", changeset: changeset, topic: topic
+  end
+
+  @doc """
+    Update a topic
+  """
+  def update(conn, %{"id" => topic_id, "topic" => topic}) do
+    changeset = Repo.get(Topic, topic_id) |> Topic.changeset(topic)
+
+    case Repo.update(changeset) do
+      {:ok, _topic} ->
+        conn
+        |> put_flash(:info, "Topic Updated")
+        |> redirect(to: topic_path(conn, :index))
+      {:error, changeset} ->
+        render conn, "edit.html", changeset: changeset
+    end
+  end
 end
