@@ -30,7 +30,10 @@ defmodule Discuss.TopicController do
     
     # Insert the data in the changeset into the database
     case Repo.insert(changeset) do
-      {:ok, post} -> IO.inspect(post) # data was successfully inserted
+      {:ok, post} -> 
+        conn
+        |> put_flash(:info, "Topic Created") # Create a message telling the user topic was created
+        |> redirect(to: topic_path(conn, :index)) # Redirect to the index route
       {:error, changeset} -> 
         render conn, "new.html", changeset: changeset # If the insertion fails, show the user the form again
     end
