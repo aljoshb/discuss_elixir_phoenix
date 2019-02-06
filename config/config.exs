@@ -25,3 +25,13 @@ config :logger, :console,
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
+
+# Authenticate users using OAuth with github as the provider
+config :ueberauth, Ueberauth,
+  providers: [
+    github: { Ueberauth.Strategy.Github, [] }
+  ]
+
+config :ueberauth, Ueberauth.Strategy.Github.Oauth,
+  client_id: "61051d9663f5ccf80150",
+  client_secret: "d0f9f44e8ad7c5ebabc55eef9578778955046b5d"
