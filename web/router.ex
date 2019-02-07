@@ -24,7 +24,7 @@ defmodule Discuss.Router do
   scope "/auth", Discuss do
     pipe_through :browser
 
-    get "/:provider", AuthController, :request
+    get "/:provider", AuthController, :request # The :request function is defined automatically for us by the UeberAuth module
     get "/:provider/callback", AuthController, :callback
   end
 
