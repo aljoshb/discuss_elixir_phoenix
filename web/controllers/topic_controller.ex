@@ -7,6 +7,7 @@ defmodule Discuss.TopicController do
     Display a list of topics
   """
   def index(conn, _params) do
+    IO.inspect(conn.assigns)
     topics = Repo.all(Topic) # get all the topics in the database - remember we are using alias here so no need to write Discuss.Repo.all(Discuss.Topic)
 
     render conn, "index.html", topics: topics
