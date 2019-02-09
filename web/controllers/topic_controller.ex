@@ -3,6 +3,8 @@ defmodule Discuss.TopicController do
   
   alias Discuss.Topic
 
+  plug Discuss.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
+
   @doc """
     Display a list of topics
   """
