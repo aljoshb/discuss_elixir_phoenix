@@ -17,6 +17,14 @@ defmodule Discuss.TopicController do
   end
 
   @doc """
+    Show a Topic and it's comments
+  """
+  def show(conn, %{"id" => topic_id}) do
+    topic = Repo.get!(Topic, topic_id)
+    render conn, "show.html", topic: topic
+  end
+
+  @doc """
     Display the form to create a new topic
   """
   def new(conn, _params) do
