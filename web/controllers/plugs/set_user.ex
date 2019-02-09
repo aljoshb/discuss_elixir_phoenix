@@ -1,3 +1,4 @@
+# The request will go from this plug to the route to the controller actions
 defmodule Discuss.Plugs.SetUser do
   import Plug.Conn
   import Phoenix.Controller
