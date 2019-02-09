@@ -4,6 +4,7 @@ defmodule Discuss.TopicController do
   alias Discuss.Topic
 
   plug Discuss.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
+  plug :check_topic_owner when action in [:update, :edit, :delete] # Using a plug function this time, since it's specific to this controller. Function is defined in this file.
 
   @doc """
     Display a list of topics
@@ -80,5 +81,21 @@ defmodule Discuss.TopicController do
     conn
     |> put_flash(:info, "Topic Deleted")
     |> redirect(to: topic_path(conn, :index))
+  end
+
+  @doc """
+    Function plug to ensure that a user can only update what it created.
+    This plug is neccesary, just in case a user still finds a way to get to this route.
+  """
+  def check_topic_owner(conn, _params) do # this specific params is not coming from router, that is, this is not the request parameters, unlike in the action functions above
+    %{params: %{"id" => topic_id}} = conn # We pull out the request param from the conn stuct
+
+    if Repo.get(Topic, topic_id).user_id == conn.assigns.user.id do
+    else
+      conn
+      |> put_flash(:error, "You cannot edit that")
+      |> redirect(to: topic_path(conn, :index))
+      |> halt() # Again, reject this request immediately, if this user didn't create this topic
+    end
   end
 end
