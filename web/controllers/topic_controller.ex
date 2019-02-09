@@ -29,8 +29,10 @@ defmodule Discuss.TopicController do
   """
   def create(conn, %{"topic" => topic}) do
     # Create the changeset - it contains the data we want to insert
-    changeset = Topic.changeset(%Topic{}, topic)
-    
+    changeset = conn.assigns.user
+      |> build_assoc(:topics) # Associate the user that created this topic with this topic in the topics database
+      |> Topic.changeset(topic)
+
     # Insert the data in the changeset into the database
     case Repo.insert(changeset) do
       {:ok, _} -> 
