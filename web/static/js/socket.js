@@ -38,8 +38,8 @@ function renderComments(comments) {
 }
 
 // Render the new comment, when a user in the channel adds a new comment
-function renderComment(comment) {
-  const renderedComment = commentTemplate(comment);
+function renderComment(event) {
+  const renderedComment = commentTemplate(event.comment);
 
   document.querySelector('.collection').innerHTML += renderedComment;
 }
