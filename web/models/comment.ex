@@ -1,6 +1,8 @@
 defmodule Discuss.Comment do
   use Discuss.Web, :model
 
+  @derive {Poison.Encoder, only: [:content]} # Tells Poison to only try to convert the content field into json, nothing else
+
   schema "comments" do
     field :content, :string
     belongs_to :user, Discuss.User
