@@ -1,15 +1,17 @@
 defmodule Discuss.CommentsChannel do
   use Discuss.Web, :channel
 
-  def join(name, _params, socket) do
-    {:ok, %{:hey => "there"}, socket}
+  alias Discuss.Topic
+
+  def join("comments:" <> topic_id, _params, socket) do
+    topic_id = String.to_integer(topic_id)
+    topic = Repo.get(Topic, topic_id)
+    
+    {:ok, %{}, socket}
   end
 
-  def handle_in(name, message, socket) do
-    IO.puts("+++++++++")
-    IO.puts(name)
+  def handle_in(name, %{"content" => content}, socket) do
     IO.inspect(message)
-
     # This response is for phoenix, not the client
     {:reply, :ok, socket}
   end

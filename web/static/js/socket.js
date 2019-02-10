@@ -7,15 +7,18 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 // Connect to the server
 socket.connect()
 
-// Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("comments:1", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+const createSocket = (topidId) => {
+  // Now that you are connected, you can join channels with a topic:
+  let channel = socket.channel(`comments:${topidId}`, {})
+  channel.join()
+    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) })
 
-// Event handler for the click of the button
-document.querySelector('button').addEventListener('click', function () {
-  channel.push('comment:hello', {hi: 'there!'});
-});
+    document.querySelector('button').addEventListener('click', () => {
+      const content = document.querySelector('textarea').value;
 
-export default socket
+      channel.push('comment:add', { content: content });
+    });
+}
+
+window.createSocket = createSocket;
