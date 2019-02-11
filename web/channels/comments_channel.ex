@@ -17,7 +17,6 @@ defmodule Discuss.CommentsChannel do
     # Get the topic that's associated with this comments socket connection
     topic = socket.assigns.topic
     user_id = socket.assigns.user_id
-    # user_id = 1
 
     changeset = topic
       |> build_assoc(:comments, user_id: user_id)
