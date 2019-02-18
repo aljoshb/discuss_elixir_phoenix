@@ -23,4 +23,6 @@ RUN mix deps.get
 
 RUN mix compile
 
+ENV DATABASE_HOST host.docker.internal
+
 CMD ["mix", "phoenix.server"]

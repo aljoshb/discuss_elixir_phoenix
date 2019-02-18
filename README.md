@@ -26,3 +26,17 @@ Your `config.secret.exs` file should contain the following, at the very least:
 ## Database Server
 
 This application makes use of `PostgreSQL`, make sure you have it installed.
+
+## Running in Docker
+
+Currently, the phoenix application can be run in a docker container, while the postgresql server is still running on local host (i.e. docker host). However, to connect from the phoenix application in the docker container to the postgres database running locally, the phoenix app has to connect to it via the private ip address of the docker host. To do this without having to find the specific value of the private address, connect to the special docker DNS name, `host.docker.internal`, which will then correctly resolve the private ip address of the docker host. This has already been set up in `config/dev.exs` and `Dockerfile`.
+
+Run the following commands from the root directory.
+
+To build the docker image:
+
+    docker build -t <preferred_image_name> .
+
+To run the container:
+
+    docker container run -p 4000:4000 --rm <preferred_image_name>

@@ -52,5 +52,5 @@ config :discuss, Discuss.Repo,
   username: "joshuaalawode",
   password: "",
   database: "discuss_dev",
-  hostname: "localhost",
+  hostname: System.get_env("DATABASE_HOST") || "localhost",
   pool_size: 10
