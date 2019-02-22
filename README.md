@@ -1,6 +1,6 @@
 # Discuss
 
-To start the application locally, run the following commands in the root directory of the project (note that this assumes you have `postgreSQL` installed and running locally and that you have commented out the `post` field in `config/dev.ex` under the `Discuss.Repo` configs):
+To start the application locally, run the following commands in the root directory of the project (note that this assumes you have `postgreSQL` installed and running locally):
 
 * Install the right version of phoenix: `mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new-1.2.5.ez`
 * Install dependencies with `mix deps.get`
@@ -34,6 +34,17 @@ There are two modes for running this application with Docker. The first involves
 
 ### Running without docker-compose
 
+To run without docker-compose, first add the following configuration field to `config/dev.ex` under the `Discuss.Repo` config:
+
+    config :discuss, Discuss.Repo,
+      adapter: Ecto.Adapters.Postgres,
+      ...
+      ...
+      pool_size: 10
+      port: 5343  *****Add this********
+
+The purpose of adding this is to use port 5343 on your local machine as the port forwarding for the `postgres` server, since it automatically defaults to 5432, when running locally.
+
 Since `docker-compose` is not being used, we have to build each image and run it's corresponding container separately.
 
 The other in which the containers are run is important. The phoenix application depends on the `postgres` database, therefore, we need to first build the `postgres` image and run it's container first, before proceeding to do the same for the phoenix application.
@@ -49,3 +60,13 @@ Building and running the `phoenix` app. Run these commands from the root directo
 
     docker build -t <preferred_phoenix_image_name> .
     docker container run -p 4000:4000 --rm <preferred_phoenix_image_name>
+
+### Running with Docker-compose
+
+To run the application with `docker-compose` run the following command at the root of the project:
+
+    docker-compose up --build
+
+The `--build` option is used to ensure that if your image is updated, it is first rebuilt. However, if the image has not been changed, you leave of the `--build` option and simply run:
+
+    docker-compose up

@@ -5,24 +5,22 @@ services:
   discuss_app:
     build:
       context: .
-      dockerfile: Dockerfile
-    volumes:
-      - '.:/usr/src/app'
+      dockerfile: Dockerfile-with-compose
     ports:
       - 4000:4000
-    # environment:
-      # - DATABASE_USER=postgres
-      # - DATABASE_PASSWORD=postgres
-    #   # - DATABASE_URL=http://discuss_db
-    # depends_on:
-    #   - discuss_db
+    environment:
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_URL=discuss_db
+    depends_on:
+      - discuss_db
 
-  # discuss_db:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile-db
-  #   ports:
-  #     - 5432:5432
-  #   environment:
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=postgres
+  discuss_db:
+    build:
+      context: .
+      dockerfile: Dockerfile-db-with-compose
+    ports:
+      - "5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
