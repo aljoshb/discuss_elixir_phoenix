@@ -4,7 +4,6 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-# RUN apk add --update nodejs nodejs-npm
 RUN apk add npm && \
     npm install
 
@@ -13,15 +12,13 @@ RUN apk add inotify-tools && \
     mix local.rebar --force && \
     mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new-1.2.5.ez && \
     mix deps.get
-
-RUN mix ecto.create && mix ecto.migrate
     
 RUN mix compile
 
-# ENV DATABASE_HOST host.docker.internal
+ENV DATABASE_URL host.docker.internal
 
-# EXPOSE 4000
+ENV DATABASE_PASSWORD postgres
 
-COPY . .
+ENV DATABASE_USER postgres
 
-CMD ["mix", "phoenix.server"]
+CMD ["mix", "do", "ecto.create,", "ecto.migrate,", "phoenix.server"]

@@ -10,19 +10,19 @@ services:
       - '.:/usr/src/app'
     ports:
       - 4000:4000
-    environment:
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=postgres
-      - DATABASE_URL=http://discuss_db
-    depends_on:
-      - discuss_db
+    # environment:
+      # - DATABASE_USER=postgres
+      # - DATABASE_PASSWORD=postgres
+    #   # - DATABASE_URL=http://discuss_db
+    # depends_on:
+    #   - discuss_db
 
-  discuss_db:
-    build:
-      context: .
-      dockerfile: Dockerfile-db
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+  # discuss_db:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile-db
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres

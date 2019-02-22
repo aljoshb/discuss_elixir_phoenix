@@ -52,5 +52,6 @@ config :discuss, Discuss.Repo,
   username: System.get_env("DATABASE_USER") || "joshuaalawode",
   password: System.get_env("DATABASE_PASSWORD") || "",
   database: "discuss_dev",
-  hostname: System.get_env("DATABASE_URL") || "discuss_db" || "localhost", # The port of the database is added by Ecto (5432 in this case)
-  pool_size: 10
+  hostname: System.get_env("DATABASE_URL") || "localhost", # The port of the database is added by Ecto (5432 in this case)
+  pool_size: 10,
+  port: 5343 # Comment this out if you are running postgres locally. Postgres is already running locally at port 5432 
